@@ -8,7 +8,7 @@ import './styles.css';
 const ListItem = ({ title, done, editAction, deleteAction, itemAction }) => {
     return (
         <li
-        className={clsx('list-item', {
+            className={clsx('list-item', {
             'list-item-done': done,
         })}
             onClick={itemAction}

@@ -32,13 +32,12 @@ const handleChangeListToDo = () => {
   }
 
   const handleToggleToDo = (toDoTitle) => {
-    setToDoList((list) => 
-      list.map((item) => 
-        ({ ...item, done: item.title === toDoTitle ? !item.done : item.done})
-      )
-    )
-    
+    setToDoList((list) => {
+      return list.map((item) => 
+        ({ ...item, done: item.title === toDoTitle ? !item.done : item.done}))
+  })
   }
+
   const doneTasks = toDoList.filter(task=> task.done)
   const undoneTasks = toDoList.filter(task => !task.done)
 
@@ -60,11 +59,8 @@ const handleChangeListToDo = () => {
           <ListItem
             key={title}
             title={title}
-            done={!done}
-            itemAction={() => {
-              setEditToDo(title);
-              setNewToDo(title);
-            }}
+            done={done}
+            itemAction={() => handleToggleToDo(title)}
             editAction={() => {
               setEditToDo(title)
               setNewToDo(title)
