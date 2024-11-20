@@ -1,18 +1,35 @@
-import EditIconSrc from '../../components/assets/file-edit.png';
-import DeleteIconSrc from '../../components/assets/delete-icon.png';
-import { Icon } from '../Icon';
+import clsx from 'clsx';
+// import EditIconSrc from '../../components/assets/file-edit.png';
+// import DeleteIconSrc from '../../components/assets/delete-icon.png';
+import Button from '../Button/Button';
+// import { Icon } from '../Icon';
 import './styles.css';
 
-const ListItem = ({ title, done, editAction }) => {
+const ListItem = ({ title, done, editAction, deleteAction, itemAction }) => {
     return (
         <li
-            className={done ? 'listItem' : ''}
+        className={clsx('list-item', {
+            'list-item-done': done,
+        })}
+            onClick={itemAction}
         >
             {title}
-            <div onClick={editAction}>
-                <Icon src={EditIconSrc} />
+            <div onClick={(e) => {
+                e.stopPropagation()}}>
+                <Button 
+                onClick={editAction} 
+                title={'Edit'} 
+                className='primary'  />
+                
             </div>
-            <Icon src={DeleteIconSrc} />
+            <div  onClick={(e) => {
+                e.stopPropagation()}}>
+                <Button 
+                onClick={deleteAction} 
+                title={'Delete'} 
+                className='secondary' />
+              
+            </div>
         </li>
     )
 }

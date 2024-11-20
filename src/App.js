@@ -20,13 +20,28 @@ const handleChangeListToDo = () => {
     if (toDoList.some(item => item.title === newToDo)) return alert('To do title should be uniq')
 
     setToDoList((list) => {
-      return list.map((item) => {
-        return { ...item, title: item.title === editToDo ? newToDo : item.title }
-      })
+      return list.map((item) => 
+        ({ ...item, title: item.title === editToDo ? newToDo : item.title }
+        ))
     })
     setEditToDo('')
     setNewToDo('')
   }
+  const handleDelete = (toDoTitle) => { 
+    setToDoList((list) => list.filter(item => item.title !== toDoTitle))
+  }
+
+  const handleToggleToDo = (toDoTitle) => {
+    setToDoList((list) => 
+      list.map((item) => 
+        ({ ...item, done: item.title === toDoTitle ? !item.done : item.done})
+      )
+    )
+    
+  }
+  const doneTasks = toDoList.filter(task=> task.done)
+  const undoneTasks = toDoList.filter(task => !task.done)
+
 
   return (
     <div>
@@ -37,19 +52,48 @@ const handleChangeListToDo = () => {
         btnTitle="Add to Do"
         btnAction={handleChangeListToDo}
       />
+
+      <div className="doneUndone">
+      <h3>Undone Tasks</h3>
       <ul>
-        {toDoList.map((listItem) => {
-          return <ListItem
-            key={listItem.title}
-            title={listItem.title}
-            done={listItem.done}
+      {undoneTasks.map(({title, done}) => (
+          <ListItem
+            key={title}
+            title={title}
+            done={!done}
+            itemAction={() => {
+              setEditToDo(title);
+              setNewToDo(title);
+            }}
             editAction={() => {
-              setEditToDo(listItem.title)
-              setNewToDo(listItem.title)
+              setEditToDo(title)
+              setNewToDo(title)
+            }}
+            deleteAction={() =>{
+              handleDelete(title)
             }}
           />
-        })}
+        ))}
       </ul>
+
+      <h3>Done Tasks</h3>
+      <ul>
+      {doneTasks.map(({title, done}) => (
+          <ListItem
+            key={title}
+            title={title}
+            done={done}
+            itemAction={() => handleToggleToDo(title)}
+            editAction={() => {
+              setEditToDo(title)
+              setNewToDo(title)
+            }}
+            deleteAction={() =>{
+              handleDelete(title)
+            }}
+          />
+        ))}
+      </ul></div>
 
       <Modal isOpen={editToDo} closeModal={setEditToDo}>
         <ToDoForm
